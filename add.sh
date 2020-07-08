@@ -19,6 +19,6 @@ then
 		right=$1
 		leftsubnet=%dynamic
 		rightsubnet=%dynamic
-		auto=add"| sudo tee -a /etc/ipsec.conf
+		auto=add"| sudo tee -a $2
 		sudo ipsec restart
 fi	
