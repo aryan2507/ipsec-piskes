@@ -1,0 +1,389 @@
+networks:
+  scn_000:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: scn_000
+    ipam:
+      config:
+      - subnet: 172.20.0.0/29
+  scn_001:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: scn_001
+    ipam:
+      config:
+      - subnet: 172.20.0.16/28
+  scn_002:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: scn_002
+    ipam:
+      config:
+      - subnet: 172.20.0.8/29
+  scn_003:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: scn_003
+    enable_ipv6: true
+    ipam:
+      config:
+      - subnet: fd00:f00d:cafe::7f00:8/125
+  scn_004:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: scn_004
+    enable_ipv6: true
+    ipam:
+      config:
+      - subnet: fd00:f00d:cafe::7f00:10/125
+services:
+  scion_br1-ff00_0_110-1:
+    command: []
+    container_name: scion_br1-ff00_0_110-1
+    depends_on:
+    - scion_disp_br1-ff00_0_110-1
+    environment:
+      SU_EXEC_USERSPEC: $LOGNAME
+    image: scion_border_debug
+    networks:
+      scn_000:
+        ipv4_address: 172.20.0.2
+      scn_001:
+        ipv4_address: 172.20.0.19
+    volumes:
+    - vol_scion_disp_br1-ff00_0_110-1:/run/shm/dispatcher:rw
+    - /home/aryan2/scion/logs:/share/logs:rw
+    - /home/aryan2/scion/gen/ISD1/ASff00_0_110/br1-ff00_0_110-1:/share/conf:ro
+  scion_br1-ff00_0_110-2:
+    command: []
+    container_name: scion_br1-ff00_0_110-2
+    depends_on:
+    - scion_disp_br1-ff00_0_110-2
+    environment:
+      SU_EXEC_USERSPEC: $LOGNAME
+    image: scion_border
+    networks:
+      scn_001:
+        ipv4_address: 172.20.0.21
+      scn_003:
+        ipv6_address: fd00:f00d:cafe::7f00:a
+    volumes:
+    - /etc/passwd:/etc/passwd:ro
+    - /etc/group:/etc/group:ro
+    - vol_scion_disp_br1-ff00_0_110-2:/run/shm/dispatcher:rw
+    - /home/aryan2/scion/logs:/share/logs:rw
+    - /home/aryan2/scion/gen/ISD1/ASff00_0_110/br1-ff00_0_110-2:/share/conf:ro
+  scion_br1-ff00_0_111-1:
+    command: []
+    container_name: scion_br1-ff00_0_111-1
+    depends_on:
+    - scion_disp_br1-ff00_0_111-1
+    environment:
+      SU_EXEC_USERSPEC: $LOGNAME
+    image: scion_border_debug
+    networks:
+      scn_000:
+        ipv4_address: 172.20.0.3
+      scn_002:
+        ipv4_address: 172.20.0.11
+    volumes:
+    - vol_scion_disp_br1-ff00_0_111-1:/run/shm/dispatcher:rw
+    - /home/aryan2/scion/logs:/share/logs:rw
+    - /home/aryan2/scion/gen/ISD1/ASff00_0_111/br1-ff00_0_111-1:/share/conf:ro
+  scion_br1-ff00_0_112-1:
+    command: []
+    container_name: scion_br1-ff00_0_112-1
+    depends_on:
+    - scion_disp_br1-ff00_0_112-1
+    environment:
+      SU_EXEC_USERSPEC: $LOGNAME
+    image: scion_border
+    networks:
+      scn_003:
+        ipv6_address: fd00:f00d:cafe::7f00:b
+      scn_004:
+        ipv6_address: fd00:f00d:cafe::7f00:13
+    volumes:
+    - /etc/passwd:/etc/passwd:ro
+    - /etc/group:/etc/group:ro
+    - vol_scion_disp_br1-ff00_0_112-1:/run/shm/dispatcher:rw
+    - /home/aryan2/scion/logs:/share/logs:rw
+    - /home/aryan2/scion/gen/ISD1/ASff00_0_112/br1-ff00_0_112-1:/share/conf:ro
+  scion_cs1-ff00_0_110-1:
+    command: []
+    container_name: scion_cs1-ff00_0_110-1
+    depends_on:
+    - scion_disp_cs1-ff00_0_110-1
+    environment:
+      SU_EXEC_USERSPEC: $LOGNAME
+    image: scion_cs
+    network_mode: service:scion_disp_cs1-ff00_0_110-1
+    volumes:
+    - /etc/passwd:/etc/passwd:ro
+    - /etc/group:/etc/group:ro
+    - /home/aryan2/scion/gen-cache:/share/cache:rw
+    - /home/aryan2/scion/logs:/share/logs:rw
+    - /home/aryan2/scion/gen-certs:/share/crypto:rw
+    - /home/aryan2/scion/gen/ISD1/ASff00_0_110/cs1-ff00_0_110-1:/share/conf:ro
+    - vol_scion_disp_cs1-ff00_0_110-1:/run/shm/dispatcher:rw
+  scion_cs1-ff00_0_111-1:
+    command: []
+    container_name: scion_cs1-ff00_0_111-1
+    depends_on:
+    - scion_disp_cs1-ff00_0_111-1
+    environment:
+      SU_EXEC_USERSPEC: $LOGNAME
+    image: scion_cs
+    network_mode: service:scion_disp_cs1-ff00_0_111-1
+    volumes:
+    - /etc/passwd:/etc/passwd:ro
+    - /etc/group:/etc/group:ro
+    - /home/aryan2/scion/gen-cache:/share/cache:rw
+    - /home/aryan2/scion/logs:/share/logs:rw
+    - /home/aryan2/scion/gen-certs:/share/crypto:rw
+    - /home/aryan2/scion/gen/ISD1/ASff00_0_111/cs1-ff00_0_111-1:/share/conf:ro
+    - vol_scion_disp_cs1-ff00_0_111-1:/run/shm/dispatcher:rw
+  scion_cs1-ff00_0_112-1:
+    command: []
+    container_name: scion_cs1-ff00_0_112-1
+    depends_on:
+    - scion_disp_cs1-ff00_0_112-1
+    environment:
+      SU_EXEC_USERSPEC: $LOGNAME
+    image: scion_cs
+    network_mode: service:scion_disp_cs1-ff00_0_112-1
+    volumes:
+    - /etc/passwd:/etc/passwd:ro
+    - /etc/group:/etc/group:ro
+    - /home/aryan2/scion/gen-cache:/share/cache:rw
+    - /home/aryan2/scion/logs:/share/logs:rw
+    - /home/aryan2/scion/gen-certs:/share/crypto:rw
+    - /home/aryan2/scion/gen/ISD1/ASff00_0_112/cs1-ff00_0_112-1:/share/conf:ro
+    - vol_scion_disp_cs1-ff00_0_112-1:/run/shm/dispatcher:rw
+  scion_disp_br1-ff00_0_110-1:
+    container_name: scion_disp_br1-ff00_0_110-1
+    environment:
+      SU_EXEC_USERSPEC: $LOGNAME
+    image: scion_dispatcher
+    networks:
+      scn_001:
+        ipv4_address: 172.20.0.18
+    volumes:
+    - /etc/passwd:/etc/passwd:ro
+    - /etc/group:/etc/group:ro
+    - /home/aryan2/scion/logs:/share/logs:rw
+    - vol_scion_disp_br1-ff00_0_110-1:/run/shm/dispatcher:rw
+    - /home/aryan2/scion/gen/ISD1/ASff00_0_110/disp_br1-ff00_0_110-1:/share/conf:rw
+  scion_disp_br1-ff00_0_110-2:
+    container_name: scion_disp_br1-ff00_0_110-2
+    environment:
+      SU_EXEC_USERSPEC: $LOGNAME
+    image: scion_dispatcher
+    networks:
+      scn_001:
+        ipv4_address: 172.20.0.20
+    volumes:
+    - /etc/passwd:/etc/passwd:ro
+    - /etc/group:/etc/group:ro
+    - /home/aryan2/scion/logs:/share/logs:rw
+    - vol_scion_disp_br1-ff00_0_110-2:/run/shm/dispatcher:rw
+    - /home/aryan2/scion/gen/ISD1/ASff00_0_110/disp_br1-ff00_0_110-2:/share/conf:rw
+  scion_disp_br1-ff00_0_111-1:
+    container_name: scion_disp_br1-ff00_0_111-1
+    environment:
+      SU_EXEC_USERSPEC: $LOGNAME
+    image: scion_dispatcher
+    networks:
+      scn_002:
+        ipv4_address: 172.20.0.10
+    volumes:
+    - /etc/passwd:/etc/passwd:ro
+    - /etc/group:/etc/group:ro
+    - /home/aryan2/scion/logs:/share/logs:rw
+    - vol_scion_disp_br1-ff00_0_111-1:/run/shm/dispatcher:rw
+    - /home/aryan2/scion/gen/ISD1/ASff00_0_111/disp_br1-ff00_0_111-1:/share/conf:rw
+  scion_disp_br1-ff00_0_112-1:
+    container_name: scion_disp_br1-ff00_0_112-1
+    environment:
+      SU_EXEC_USERSPEC: $LOGNAME
+    image: scion_dispatcher
+    networks:
+      scn_004:
+        ipv6_address: fd00:f00d:cafe::7f00:12
+    volumes:
+    - /etc/passwd:/etc/passwd:ro
+    - /etc/group:/etc/group:ro
+    - /home/aryan2/scion/logs:/share/logs:rw
+    - vol_scion_disp_br1-ff00_0_112-1:/run/shm/dispatcher:rw
+    - /home/aryan2/scion/gen/ISD1/ASff00_0_112/disp_br1-ff00_0_112-1:/share/conf:rw
+  scion_disp_cs1-ff00_0_110-1:
+    container_name: scion_disp_cs1-ff00_0_110-1
+    environment:
+      SU_EXEC_USERSPEC: $LOGNAME
+    image: scion_dispatcher
+    networks:
+      scn_001:
+        ipv4_address: 172.20.0.22
+    volumes:
+    - /etc/passwd:/etc/passwd:ro
+    - /etc/group:/etc/group:ro
+    - /home/aryan2/scion/logs:/share/logs:rw
+    - vol_scion_disp_cs1-ff00_0_110-1:/run/shm/dispatcher:rw
+    - /home/aryan2/scion/gen/ISD1/ASff00_0_110/disp_cs1-ff00_0_110-1:/share/conf:rw
+  scion_disp_cs1-ff00_0_111-1:
+    container_name: scion_disp_cs1-ff00_0_111-1
+    environment:
+      SU_EXEC_USERSPEC: $LOGNAME
+    image: scion_dispatcher
+    networks:
+      scn_002:
+        ipv4_address: 172.20.0.12
+    volumes:
+    - /etc/passwd:/etc/passwd:ro
+    - /etc/group:/etc/group:ro
+    - /home/aryan2/scion/logs:/share/logs:rw
+    - vol_scion_disp_cs1-ff00_0_111-1:/run/shm/dispatcher:rw
+    - /home/aryan2/scion/gen/ISD1/ASff00_0_111/disp_cs1-ff00_0_111-1:/share/conf:rw
+  scion_disp_cs1-ff00_0_112-1:
+    container_name: scion_disp_cs1-ff00_0_112-1
+    environment:
+      SU_EXEC_USERSPEC: $LOGNAME
+    image: scion_dispatcher
+    networks:
+      scn_004:
+        ipv6_address: fd00:f00d:cafe::7f00:14
+    volumes:
+    - /etc/passwd:/etc/passwd:ro
+    - /etc/group:/etc/group:ro
+    - /home/aryan2/scion/logs:/share/logs:rw
+    - vol_scion_disp_cs1-ff00_0_112-1:/run/shm/dispatcher:rw
+    - /home/aryan2/scion/gen/ISD1/ASff00_0_112/disp_cs1-ff00_0_112-1:/share/conf:rw
+  scion_sd1-ff00_0_110:
+    container_name: scion_sd1-ff00_0_110
+    depends_on:
+    - scion_disp_cs1-ff00_0_110-1
+    environment:
+      SU_EXEC_USERSPEC: $LOGNAME
+    image: scion_sciond
+    networks:
+      scn_001:
+        ipv4_address: 172.20.0.23
+    volumes:
+    - /etc/passwd:/etc/passwd:ro
+    - /etc/group:/etc/group:ro
+    - vol_scion_disp_cs1-ff00_0_110-1:/run/shm/dispatcher:rw
+    - /home/aryan2/scion/gen-cache:/share/cache:rw
+    - /home/aryan2/scion/logs:/share/logs:rw
+    - /home/aryan2/scion/gen-certs:/share/crypto:rw
+    - /home/aryan2/scion/gen/ISD1/ASff00_0_110/endhost:/share/conf:ro
+  scion_sd1-ff00_0_111:
+    container_name: scion_sd1-ff00_0_111
+    depends_on:
+    - scion_disp_cs1-ff00_0_111-1
+    environment:
+      SU_EXEC_USERSPEC: $LOGNAME
+    image: scion_sciond
+    networks:
+      scn_002:
+        ipv4_address: 172.20.0.13
+    volumes:
+    - /etc/passwd:/etc/passwd:ro
+    - /etc/group:/etc/group:ro
+    - vol_scion_disp_cs1-ff00_0_111-1:/run/shm/dispatcher:rw
+    - /home/aryan2/scion/gen-cache:/share/cache:rw
+    - /home/aryan2/scion/logs:/share/logs:rw
+    - /home/aryan2/scion/gen-certs:/share/crypto:rw
+    - /home/aryan2/scion/gen/ISD1/ASff00_0_111/endhost:/share/conf:ro
+  scion_sd1-ff00_0_112:
+    container_name: scion_sd1-ff00_0_112
+    depends_on:
+    - scion_disp_cs1-ff00_0_112-1
+    environment:
+      SU_EXEC_USERSPEC: $LOGNAME
+    image: scion_sciond
+    networks:
+      scn_004:
+        ipv6_address: fd00:f00d:cafe::7f00:15
+    volumes:
+    - /etc/passwd:/etc/passwd:ro
+    - /etc/group:/etc/group:ro
+    - vol_scion_disp_cs1-ff00_0_112-1:/run/shm/dispatcher:rw
+    - /home/aryan2/scion/gen-cache:/share/cache:rw
+    - /home/aryan2/scion/logs:/share/logs:rw
+    - /home/aryan2/scion/gen-certs:/share/crypto:rw
+    - /home/aryan2/scion/gen/ISD1/ASff00_0_112/endhost:/share/conf:ro
+  tester_1-ff00_0_110:
+    container_name: tester_1-ff00_0_110
+    entrypoint: sh tester.sh
+    environment: {}
+    image: scion_tester
+    networks:
+      scn_001:
+        ipv4_address: 172.20.0.24
+    privileged: true
+    volumes:
+    - vol_scion_disp_cs1-ff00_0_110-1:/run/shm/dispatcher:rw
+    - /home/aryan2/scion/logs:/share/logs:rw
+    - /home/aryan2/scion/gen:/share/gen:rw
+    - /home/aryan2/scion/gen-certs:/share/gen-certs:rw
+  tester_1-ff00_0_111:
+    container_name: tester_1-ff00_0_111
+    entrypoint: sh tester.sh
+    environment: {}
+    image: scion_tester
+    networks:
+      scn_002:
+        ipv4_address: 172.20.0.14
+    privileged: true
+    volumes:
+    - vol_scion_disp_cs1-ff00_0_111-1:/run/shm/dispatcher:rw
+    - /home/aryan2/scion/logs:/share/logs:rw
+    - /home/aryan2/scion/gen:/share/gen:rw
+    - /home/aryan2/scion/gen-certs:/share/gen-certs:rw
+  tester_1-ff00_0_112:
+    container_name: tester_1-ff00_0_112
+    entrypoint: sh tester.sh
+    environment: {}
+    image: scion_tester
+    networks:
+      scn_004:
+        ipv6_address: fd00:f00d:cafe::7f00:16
+    privileged: true
+    volumes:
+    - vol_scion_disp_cs1-ff00_0_112-1:/run/shm/dispatcher:rw
+    - /home/aryan2/scion/logs:/share/logs:rw
+    - /home/aryan2/scion/gen:/share/gen:rw
+    - /home/aryan2/scion/gen-certs:/share/gen-certs:rw
+  utils_chowner:
+    command: chown -R $LOGNAME /mnt/volumes
+    image: busybox
+    volumes:
+    - /etc/passwd:/etc/passwd:ro
+    - /etc/group:/etc/group:ro
+    - vol_scion_disp_br1-ff00_0_110-1:/mnt/volumes/vol_scion_disp_br1-ff00_0_110-1
+    - vol_scion_disp_br1-ff00_0_110-2:/mnt/volumes/vol_scion_disp_br1-ff00_0_110-2
+    - vol_scion_disp_cs1-ff00_0_110-1:/mnt/volumes/vol_scion_disp_cs1-ff00_0_110-1
+    - vol_scion_disp_br1-ff00_0_111-1:/mnt/volumes/vol_scion_disp_br1-ff00_0_111-1
+    - vol_scion_disp_cs1-ff00_0_111-1:/mnt/volumes/vol_scion_disp_cs1-ff00_0_111-1
+    - vol_scion_disp_br1-ff00_0_112-1:/mnt/volumes/vol_scion_disp_br1-ff00_0_112-1
+    - vol_scion_disp_cs1-ff00_0_112-1:/mnt/volumes/vol_scion_disp_cs1-ff00_0_112-1
+  utils_cleaner:
+    command: sh -c "find /mnt/volumes -type s -print0 | xargs -r0 rm -v"
+    image: busybox
+    volumes:
+    - vol_scion_disp_br1-ff00_0_110-1:/mnt/volumes/vol_scion_disp_br1-ff00_0_110-1
+    - vol_scion_disp_br1-ff00_0_110-2:/mnt/volumes/vol_scion_disp_br1-ff00_0_110-2
+    - vol_scion_disp_cs1-ff00_0_110-1:/mnt/volumes/vol_scion_disp_cs1-ff00_0_110-1
+    - vol_scion_disp_br1-ff00_0_111-1:/mnt/volumes/vol_scion_disp_br1-ff00_0_111-1
+    - vol_scion_disp_cs1-ff00_0_111-1:/mnt/volumes/vol_scion_disp_cs1-ff00_0_111-1
+    - vol_scion_disp_br1-ff00_0_112-1:/mnt/volumes/vol_scion_disp_br1-ff00_0_112-1
+    - vol_scion_disp_cs1-ff00_0_112-1:/mnt/volumes/vol_scion_disp_cs1-ff00_0_112-1
+version: '2.4'
+volumes:
+  vol_scion_disp_br1-ff00_0_110-1: null
+  vol_scion_disp_br1-ff00_0_110-2: null
+  vol_scion_disp_br1-ff00_0_111-1: null
+  vol_scion_disp_br1-ff00_0_112-1: null
+  vol_scion_disp_cs1-ff00_0_110-1: null
+  vol_scion_disp_cs1-ff00_0_111-1: null
+  vol_scion_disp_cs1-ff00_0_112-1: null
