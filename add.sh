@@ -5,7 +5,7 @@ do
 	if [ "$a" = "conn $1" ]; then
          let "p = $p + 1"
 	fi
-done<$2
+done<"/etc/ipsec.conf"
 if [ $p -eq 0 ]
 then
 	echo "conn $1
@@ -15,9 +15,9 @@ then
 		keyingtries=1
 		keyexchange=ikev2
 		authby=secret
-		left=$3
+		left=$2
 		right=$1
 		leftsubnet=%dynamic
 		rightsubnet=%dynamic
-		auto=add"| tee -a $2
+		auto=add"| tee -a "/etc/ipsec.conf"
 fi	

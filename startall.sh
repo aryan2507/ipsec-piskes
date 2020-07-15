@@ -5,4 +5,4 @@ while read a; do
                                 k="${a##* }"
                                 ipsec up "$k"
                         fi
-                done<$1
+                done<"/etc/ipsec.conf"
