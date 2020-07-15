@@ -1,7 +1,8 @@
 #!/bin/bash
+ipsec restart
 while read a; do
                         if [[ "$a" = conn* && ! "$a" = "conn %default" ]]; then
                                 k="${a##* }"
-                                sudo ipsec up "$k"
+                                ipsec up "$k"
                         fi
                 done<$1

@@ -1,4 +1,6 @@
 #!/bin/bash
+ipsec stop
+ipsec start
 ifconfig |  grep -w "inet*" >>temp.txt
 awk -F ' ' '{print $2;}' temp.txt > a.txt
 awk -F ':' '{print $2;}' a.txt >temp.txt
