@@ -20,6 +20,6 @@ then
 		leftsubnet=%dynamic
 		rightsubnet=%dynamic
 		auto=add"| tee -a "/etc/ipsec.conf"
-		k="${1} : PSK p@$$w0rd"
+		k="${1} : PSK p@ssw0rd"
         echo "$k"| tee -a "/etc/ipsec.secrets"
 fi	

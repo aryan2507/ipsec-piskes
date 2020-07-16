@@ -76,7 +76,7 @@ do
         ansr=$( ipv4 "$remote" )
         . ./add.sh "$ansr" "$ans"
 done<"temp1.txt"
-. ./startall.sh
+ipsec start
 rm temp1.txt
 rm temp2.txt
 rm temp3.txt

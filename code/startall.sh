@@ -1,5 +1,4 @@
 #!/bin/bash
-ipsec restart
 while read a; do
                         if [[ "$a" = conn* && ! "$a" = "conn %default" ]]; then
                                 k="${a##* }"
