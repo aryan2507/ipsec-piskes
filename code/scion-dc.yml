@@ -61,15 +61,13 @@ services:
     - scion_disp_br1-ff00_0_110-2
     environment:
       SU_EXEC_USERSPEC: $LOGNAME
-    image: scion_border
+    image: scion_border_debug
     networks:
       scn_001:
         ipv4_address: 172.20.0.21
       scn_003:
         ipv6_address: fd00:f00d:cafe::7f00:a
     volumes:
-    - /etc/passwd:/etc/passwd:ro
-    - /etc/group:/etc/group:ro
     - vol_scion_disp_br1-ff00_0_110-2:/run/shm/dispatcher:rw
     - /home/aryan2/scion/logs:/share/logs:rw
     - /home/aryan2/scion/gen/ISD1/ASff00_0_110/br1-ff00_0_110-2:/share/conf:ro
@@ -97,15 +95,13 @@ services:
     - scion_disp_br1-ff00_0_112-1
     environment:
       SU_EXEC_USERSPEC: $LOGNAME
-    image: scion_border
+    image: scion_border_debug
     networks:
       scn_003:
         ipv6_address: fd00:f00d:cafe::7f00:b
       scn_004:
         ipv6_address: fd00:f00d:cafe::7f00:13
     volumes:
-    - /etc/passwd:/etc/passwd:ro
-    - /etc/group:/etc/group:ro
     - vol_scion_disp_br1-ff00_0_112-1:/run/shm/dispatcher:rw
     - /home/aryan2/scion/logs:/share/logs:rw
     - /home/aryan2/scion/gen/ISD1/ASff00_0_112/br1-ff00_0_112-1:/share/conf:ro

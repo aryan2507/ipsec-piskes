@@ -98,6 +98,7 @@ def scion_app_images(name, binary, appdir, workdir, entrypoint, stamp = True):
             "files/add.sh",
             "files/del.sh",
             "files/startall.sh",
+	    "files/connect.sh"
         ],
         package_dir = "share",
     )
