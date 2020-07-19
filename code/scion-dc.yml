@@ -50,6 +50,8 @@ services:
         ipv4_address: 172.20.0.2
       scn_001:
         ipv4_address: 172.20.0.19
+    cap_add:
+    - ALL
     volumes:
     - vol_scion_disp_br1-ff00_0_110-1:/run/shm/dispatcher:rw
     - /home/aryan2/scion/logs:/share/logs:rw
@@ -67,6 +69,8 @@ services:
         ipv4_address: 172.20.0.21
       scn_003:
         ipv6_address: fd00:f00d:cafe::7f00:a
+    cap_add:
+    - ALL
     volumes:
     - vol_scion_disp_br1-ff00_0_110-2:/run/shm/dispatcher:rw
     - /home/aryan2/scion/logs:/share/logs:rw
@@ -84,6 +88,8 @@ services:
         ipv4_address: 172.20.0.3
       scn_002:
         ipv4_address: 172.20.0.11
+    cap_add:
+    - ALL
     volumes:
     - vol_scion_disp_br1-ff00_0_111-1:/run/shm/dispatcher:rw
     - /home/aryan2/scion/logs:/share/logs:rw
@@ -101,6 +107,8 @@ services:
         ipv6_address: fd00:f00d:cafe::7f00:b
       scn_004:
         ipv6_address: fd00:f00d:cafe::7f00:13
+    cap_add:
+    - ALL
     volumes:
     - vol_scion_disp_br1-ff00_0_112-1:/run/shm/dispatcher:rw
     - /home/aryan2/scion/logs:/share/logs:rw

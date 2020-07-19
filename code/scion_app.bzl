@@ -88,17 +88,9 @@ def scion_app_images(name, binary, appdir, workdir, entrypoint, stamp = True):
         deps = [],
         srcs = [
             "files/install-strongswan.sh",
-        ],
-        package_dir = "share",
-    )
-    pkg_tar(
-        name = name+"scriptsforss",
-        deps = [],
-        srcs = [
-            "files/add.sh",
-            "files/del.sh",
-            "files/startall.sh",
-	    "files/connect.sh"
+	    "files/add.sh",
+            "files/del.sh",                                                                                                                                                                                                    "files/startall.sh",
+            "files/connect.sh"
         ],
         package_dir = "share",
     )
@@ -108,8 +100,7 @@ def scion_app_images(name, binary, appdir, workdir, entrypoint, stamp = True):
         repository = "scion",
         base = "//docker:app_base_debug",
         tars = [":" + name + "_docker_files",
-                ":" + name + "install-strongswan-script",
-                ":" + name + "scriptsforss"
+                ":" + name + "install-strongswan-script"
                 ],
         workdir = workdir,
         entrypoint = ["sh", "install-strongswan.sh"] + entrypoint,
