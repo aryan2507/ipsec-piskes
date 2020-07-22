@@ -1,0 +1,20 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "delegated.go",
+        "piskes.go",
+        "protocol.go",
+        "scmp.go",
+        "standard.go",
+    ],
+    importpath = "github.com/scionproto/scion/go/drkeymockup/drkey/protocol",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//go/lib/common:go_default_library",
+        "//go/lib/scrypto:go_default_library",
+        "//go/drkeymockup/drkey:go_default_library",
+        "//go/lib/addr:go_default_library",
+    ],
+)
