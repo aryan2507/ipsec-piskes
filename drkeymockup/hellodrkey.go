@@ -19,7 +19,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"time"
-
+	"os"
 	"github.com/scionproto/scion/go/lib/addr"
 	"github.com/scionproto/scion/go/lib/sciond"
 
@@ -36,10 +36,10 @@ var dstIA, _ = addr.IAFromString("1-ff00:0:111")
 var srcHost = addr.HostFromIPStr("127.0.0.1")
 var dstHost = addr.HostFromIPStr("127.0.0.2")
 
-const (
-	sciondForClient = "172.20.0.23:30255"
-	sciondForServer = "172.20.0.23:30255"
-)
+
+var sciondForClient = "172.20.0.23:30255"
+var sciondForServer = "172.20.0.23:30255"
+
 
 // Check just ensures the error is nil, or complains and quits
 func check(e error) {
@@ -107,7 +107,7 @@ func (s Server) dsForServer(meta drkey.Lvl2Meta) drkey.DelegationSecret {
 	}
 	lvl2Key, err := mockupsciond.DRKeyGetLvl2Key(ctx, dsMeta, now)
 	check(err)
-	fmt.Printf("Only the server obtains it: DS key = %s\n", hex.EncodeToString(lvl2Key.Key))
+	//fmt.Printf(hex.EncodeToString(lvl2Key.Key))
 	ds := drkey.DelegationSecret{
 		Protocol: lvl2Key.Protocol,
 		Epoch:    lvl2Key.Epoch,
@@ -144,22 +144,33 @@ func ThisServerAndMeta() (Server, drkey.Lvl2Meta) {
 }
 
 func main() {
-	var clientKey, serverKey drkey.Lvl2Key
-	ITER_COUNT := 100 // obtain key several times to average its time
-
-	client, metaClient := ThisClientAndMeta()
-	t0 := time.Now()
-	for i := 0; i < ITER_COUNT; i++ {
-		clientKey = client.HostKey(metaClient)
-	}
-	durationClient := time.Since(t0) / time.Duration(ITER_COUNT)
+	comp:= os.Args[3] < os.Args[4]
+	sciondForServer = os.Args[5]
+        sciondForClient = os.Args[5]
+        ITER_COUNT := 100
+	if comp {
+	var serverKey drkey.Lvl2Key
+	srcIA, _ = addr.IAFromString(os.Args[1])
+	dstIA, _= addr.IAFromString(os.Args[2])
+	srcHost = addr.HostFromIPStr(os.Args[3])
+	dstHost = addr.HostFromIPStr(os.Args[4])
 	server, metaServer := ThisServerAndMeta()
-	ds := server.dsForServer(metaServer)
-	t0 = time.Now()
-	for i := 0; i < ITER_COUNT; i++ {
-		serverKey = server.HostKeyFromDS(metaServer, ds)
+        ds := server.dsForServer(metaServer)
+        for i := 0; i < ITER_COUNT; i++ {
+                serverKey = server.HostKeyFromDS(metaServer, ds)
+        }
+        fmt.Printf(hex.EncodeToString(serverKey.Key))
+	} else {
+	var clientKey drkey.Lvl2Key
+	srcIA, _ = addr.IAFromString(os.Args[2])
+        dstIA, _= addr.IAFromString(os.Args[1])
+        srcHost = addr.HostFromIPStr(os.Args[4])
+        dstHost = addr.HostFromIPStr(os.Args[3])
+	client, metaClient := ThisClientAndMeta()
+        for i := 0; i < ITER_COUNT; i++ {
+              clientKey = client.HostKey(metaClient)
+        }
+	fmt.Printf(hex.EncodeToString(clientKey.Key))
 	}
-	durationServer := time.Since(t0) / time.Duration(ITER_COUNT)
-	fmt.Printf("Client,\thost key = %s\tduration = %s\n", hex.EncodeToString(clientKey.Key), durationClient)
-	fmt.Printf("Server,\thost key = %s\tduration = %s\n", hex.EncodeToString(serverKey.Key), durationServer)
+	
 }

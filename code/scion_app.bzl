@@ -67,7 +67,8 @@ def scion_app_base():
 def scion_app_images(name, binary, appdir, workdir, entrypoint, stamp = True):
     pkg_tar(
         name = name + "_docker_files",
-        srcs = [binary],
+        srcs = [binary,
+		"//go/drkeymockup:drkeymockup"],
         package_dir = appdir,
         mode = "0755",
     )
