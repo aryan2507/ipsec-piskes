@@ -91,7 +91,8 @@ def scion_app_images(name, binary, appdir, workdir, entrypoint, stamp = True):
             "files/install-strongswan.sh",
 	    "files/add.sh",
             "files/del.sh",                                                                                                                                                                                                    "files/startall.sh",
-            "files/connect.sh"
+            "files/connect.sh",
+	    "files/rekey.sh"
         ],
         package_dir = "share",
     )

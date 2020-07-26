@@ -2,12 +2,12 @@
 while read a; do
                         if [[ "$a" = conn* && ! "$a" = "conn %default" ]]; then
                                 k="${a##* }"
-                                ipsec status > tempstat.txt
-                                ktemp=$(grep -c "$k" tempstat.txt)
+                                ipsec status > /share/tempstat.txt
+                                ktemp=$(grep -c "$k" /share/tempstat.txt)
                                 if [ $ktemp -eq 0 ]
                                 then
                                 ipsec up "$k"
                                 fi
-                                rm tempstat.txt
+                                rm /share/tempstat.txt
                         fi
                 done<"/etc/ipsec.conf"
