@@ -17,8 +17,6 @@ then
                 authby=secret
                 left=$2
                 right=$1
-                leftsubnet=%dynamic
-                rightsubnet=%dynamic
                 auto=add" | tee -a "/etc/ipsec.conf"
                 k="${1} : PSK ${3}"
         echo "$k"| dd status=none of="/etc/ipsec.secrets"
