@@ -9,7 +9,7 @@ Before the run:
 
 1. Make a dockerized topology (for e.g. "./scion.sh topology -c topology/tiny.topo **--docker**")
 2. The "docker/scion_app.bzl" and "gen/scion-dc.yml" have to be changed according to the topology. These changed files for the tiny.topo topology are in the repository.
-3. **Put all the bash scripts inside "docker/files" directory. Also copy the drkeymockup folder to the "go" directory.**(Please note that a few changes have been made in the "hellodrkey.go" file and it is not the same as in "https://github.com/JordiSubira/drkeymockup")
+3. **Put all the bash scripts inside "docker/files" directory. Also copy the drkeymockup folder to the "go" directory.**
 4. Execute "make -C docker debug"
 
 Run the SCION infrastructure using "./scion.sh run"
